@@ -18,25 +18,25 @@ prevoius = False
 # Grab bitcoin price
 def update_price():
     global prevoius
-
-    page = urllib.request.urlopen("https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=EGP").read()
+    
+    page = urllib.request.urlopen("https://www.currency.me.uk/convert/usd/egp").read()
     html = BeautifulSoup(page, "html.parser")
-    price_large = html.find(class_="result__BigRate-sc-1bsijpp-1 iGrAod")
-    print(price_large)
+    price_large = html.find(class_="col-xs-4 col-sm-4 col-md-4 col-lg-3")
+    #print(price_large)
     # Convert price_large to string
     price_large1 = str(price_large)
     # Get the price from the class
-    price_large2 = price_large1[47:52]
+    price_large2 = price_large1[293:299]
     print(price_large2)
 
     # Define change
     current_price = price_large2
-    current_price = current_price.replace(",", "")
+    current_price = current_price.replace(".", "")
     if prevoius:
         if float(prevoius) > float(current_price):
             lable_currentPrice.config(text=f"Price -{round(float(prevoius) - float(current_price), 2)}", fg="red")
         elif float(prevoius) == float(current_price):
-            lable_currentPrice.config(text="- Price unchanged -", fg="grey")
+            lable_currentPrice.config(text="- Price unchanged -", fg="white")
         else:
             lable_currentPrice.config(text=f"Price +{round(float(current_price) - float(prevoius), 2)}", fg="green")
     else:
@@ -46,8 +46,8 @@ def update_price():
     # Update bitocin price
     lable_price.config(text=f"{price_large2} EGP")
 
-    # Update price every 60 seconds
-    main_window.after(60000, update_price)
+    # Update price every 10 seconds
+    main_window.after(10000, update_price)
 
 def update_time():
     # Current time
